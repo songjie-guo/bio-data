@@ -27,7 +27,7 @@ def main():
         antigen = add_SAB_info(antigen,SABdf)
     # print(antigen.chain_id_SAB, antigen.chain_id_PDB, antigen.auth_id_PDB)
     
-    all_antigen.append(antigen)
+        all_antigen.append(antigen)
 
     with open('./bio-data-test/all_antigen.json', 'w') as f:
         json.dump(all_antigen, f)
