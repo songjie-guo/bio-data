@@ -6,7 +6,7 @@ import json
 import pickle
 import datetime
 
-log_file = './bio-data-test/error.log'
+log_file = './bio-data-test/error.txt'
 
 all_antigen = []
 
@@ -69,7 +69,7 @@ def add_SAB_info(antigen,SABdf):
 
 def log(message):
     with open(log_file, 'a') as f:
-        current_time = datetime.datetime.now().strftime('%Y/%m/%d %H:%M')
+        # current_time = datetime.datetime.now().strftime('%Y/%m/%d %H:%M')
         # f.write(f'{current_time}\t{message}\n')
         f.write(f'{message}\n')
 main()

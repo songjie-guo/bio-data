@@ -38,13 +38,13 @@ bio-data-test/ (change the path if needed and change corresponding codes)
     1a2y_1.pdb 
     ...
   log/
-    error.log
+    error.txt
 ```
 
 Note that all data are stored in a seperate folder, for better management
 
 ## 3. Ckeck Errors
-The `error.log` shows all possible errors that may occur during the processing, so that you may take a further look and manually adjust it.
+The `error.txt` shows all possible errors that may occur during the processing, so that you may take a further look and manually adjust it.
 
 Explanation:
 |error|meaning|
