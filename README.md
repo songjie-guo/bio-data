@@ -1,4 +1,4 @@
-# Biology Data Processing (from SAbDAb & Protein Data Bank)
+# Biology Data Processing (using SAbDAb & PDB)
 
 Generate the antibody's corresponding antigen .fasta and .pdb file (can be used for antibody)
 
