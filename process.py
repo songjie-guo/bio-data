@@ -105,10 +105,7 @@ def generate_pdb_file(atoms,antigen,i):
     atoms_selected = atoms[atoms['chain_id'].isin(chain_selected)]
 
     # for Antigen
-    s = StringIO()
-    atoms_selected.to_csv(s, index=False)
-    atoms_selected_str = s.getvalue()
-    antigen.pdb_list.append(atoms_selected_str)
+    antigen.pdb_list.append(atoms_selected)
 
     # for file
     antigen_pdb = PandasPdb()
