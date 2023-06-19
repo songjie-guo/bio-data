@@ -27,9 +27,6 @@ def main():
         antigen = add_SAB_info(antigen,SABdf)
     
         antigens[antigen.code] = antigen
-    
-    with open('./bio-data-test/all_antigen.pkl', 'wb') as f:
-        pickle.dump(antigens, f)
 
 """
     To process antigen (by its pdb_code, e.g. '1a14')
