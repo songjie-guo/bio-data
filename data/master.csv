@@ -74,7 +74,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 1jrh,['I'],[['C']],[['I']],
 1k4c,['C'],[['C']],[[]],
 1k4d,['C'],[['C']],[[]],
-1kb5,['A | B'],[],[],1kb5: No fasta generated.
+1kb5,['A | B'],[],[],No fasta generated.
 1kb9,['E'],"[['A'], ['B'], ['C'], ['D'], ['E'], ['F'], ['G'], ['H'], ['I']]","[[], [], [], [], [], [], [], [], []]",
 1kc5,['P'],[['C']],[['P']],
 1kcr,['P'],[['C']],[['P']],
@@ -104,7 +104,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 1ncd,['N'],[['A']],[['N']],
 1ndg,['C'],[['C']],[[]],
 1ndm,['C'],[['C']],[[]],
-1nfd,"['D', 'B']",[],[],1nfd: No fasta generated.
+1nfd,"['D', 'B']",[],[],No fasta generated.
 1nl0,['G'],[['C']],[['G']],
 1nma,['N'],[['A']],[['N']],
 1nmb,['N'],[['A']],[['N']],
@@ -228,7 +228,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 2dqh,['Y'],[['C']],[['Y']],
 2dqi,['Y'],[['C']],[['Y']],
 2dqj,['Y'],[['C']],[['Y']],
-2dtg,['E'],[],[],2dtg: No valid ori_fasta.
+2dtg,['E'],[],[],No valid ori_fasta.
 2dwd,['C'],[['C']],[[]],
 2dwe,['C'],[['C']],[[]],
 2eh8,['P'],[['C']],[['P']],
@@ -285,7 +285,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 2itd,['C'],[['C']],[[]],
 2j4w,['D'],[['A']],[['D']],
 2j5l,['A'],[['A']],[[]],
-2j6e,"['B', 'A']","[['A', ' B']]",[[]],2j6e: No valid ori_pdb.
+2j6e,"['B', 'A']","[['A', ' B']]",[[]],No valid ori_pdb.
 2j88,['A'],[['A']],[[]],
 2jel,['P'],[['C']],[['P']],
 2jix,"['E', 'C | B']","[['B', ' C', ' E']]",[[]],
@@ -495,7 +495,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 3ks0,"['A', 'B']","[['C', ' F']]","[['A', 'B']]",
 3l5w,"['J', 'I']","[['C', ' F']]","[['I', 'J']]",
 3l5x,['A'],[['C']],[['A']],
-3l5y,['A'],[],[],3l5y: No valid ori_fasta.
+3l5y,['A'],[],[],No valid ori_fasta.
 3l95,"['X', 'Y']","[['C', ' F']]","[['X', 'Y']]",
 3ld8,['A'],[['A']],[[]],
 3ldb,['A'],[['A']],[[]],
@@ -505,7 +505,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 3lh2,"['V', 'S', 'T', 'U']","[['A', ' C', ' E', ' J']]","[['S', 'T', 'U', 'V']]",
 3lhp,"['S', 'T']","[['E', ' F']]","[['S', 'T']]",
 3liz,['A'],[['A']],[[]],
-3loh,['E'],[],[],3loh: No valid ori_fasta.
+3loh,['E'],[],[],No valid ori_fasta.
 3lqa,['G | C'],"[['A'], ['B']]","[['C'], ['G']]",
 3lzf,['A'],"[['A'], ['B']]","[[], []]",
 3ma9,['A'],[['A']],[[]],
@@ -568,9 +568,9 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 3rif,"['A', 'B', 'E', 'D', 'C']","[['A', ' B', ' C', ' D', ' E']]",[[]],
 3rkd,"['B', 'A']","[['A', ' B']]",[[]],
 3ru8,['X'],[['A']],[['X']],
-3rvv,['A'],[],[],3rvv: No valid ori_fasta.
-3rvw,['A'],[],[],3rvw: No valid ori_fasta.
-3rvx,['A'],[],[],3rvx: No valid ori_fasta.
+3rvv,['A'],[],[],No valid ori_fasta.
+3rvw,['A'],[],[],No valid ori_fasta.
+3rvx,['A'],[],[],No valid ori_fasta.
 3s35,['X'],[['C']],[['X']],
 3s36,['X'],[['C']],[['X']],
 3s37,['X'],[['C']],[['X']],
@@ -580,7 +580,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 3se9,['G'],[['A']],[['G']],
 3sge,"['M', 'K']","[['E', ' F']]","[['K', 'M']]",
 3skj,"['E', 'F']","[['E', ' F']]",[[]],
-3sm5,"['E', 'C', 'A']",[],[],3sm5: No valid ori_fasta.
+3sm5,"['E', 'C', 'A']",[],[],No valid ori_fasta.
 3so3,['A'],[['A']],[[]],
 3sob,['B'],[['B']],[[]],
 3sqo,['A'],"[['A'], ['D']]","[[], ['P']]",
@@ -636,8 +636,8 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 3wkm,"['A', 'B']","[['A', ' D']]",[['B']],
 3wlw,"['A', 'B']","[['A', ' B']]",[[]],
 3wsq,['A'],[['A']],[[]],
-3wxv,['A'],[],[],3wxv: No valid ori_fasta.
-3wxw,['A'],[],[],3wxw: No valid ori_fasta.
+3wxv,['A'],[],[],No valid ori_fasta.
+3wxw,['A'],[],[],No valid ori_fasta.
 3x3f,['A'],[['C']],[['A']],
 3zdx,"['A | D', 'C']","[['A', ' C'], ['B', ' D']]","[[], []]",
 3zdy,"['A | D', 'C']","[['A', ' C'], ['B', ' D'], ['H', ' I']]","[[], [], ['I', 'J']]",
@@ -833,7 +833,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 4nnp,"['A', 'B']","[['A', ' B']]",[[]],
 4np4,['A'],[['A']],[[]],
 4nrx,"['P', 'C', nan]","[['A', ' B']]","[['C', 'P']]",
-4nx3,['D'],[],[],4nx3: No valid ori_fasta.
+4nx3,['D'],[],[],No valid ori_fasta.
 4nzr,['M'],[['C']],[['M']],
 4nzt,['M'],[['A']],[['M']],
 4o02,['A'],"[['A'], ['B']]","[[], []]",
@@ -868,12 +868,12 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 4pd4,['E'],"[['B'], ['C'], ['D'], ['E'], ['F'], ['G'], ['H'], ['I'], ['A']]","[[], [], [], [], [], [], [], [], []]",
 4plj,"['A', 'B']","[['A', ' B']]",[[]],
 4plk,"['A', 'F', 'E', 'B']","[['A', ' B', ' G', ' H']]","[['E', 'F']]",
-4pp1,"['B', 'A']",[],[],4pp1: No valid ori_fasta.
-4pp2,"['E', 'F']",[],[],4pp2: No valid ori_fasta.
+4pp1,"['B', 'A']",[],[],No valid ori_fasta.
+4pp2,"['E', 'F']",[],[],No valid ori_fasta.
 4ps4,['A'],[['C']],[['A']],
 4py8,['B | A'],"[['A'], ['B']]","[[], []]",
 4q0x,['E'],[['C']],[['E']],
-4q5z,"['D', 'G', 'F', 'E', 'A', 'C', 'H', 'B']",[],[],4q5z: No valid ori_fasta.
+4q5z,"['D', 'G', 'F', 'E', 'A', 'C', 'H', 'B']",[],[],No valid ori_fasta.
 4q6i,"['C', 'K', 'J', 'I']","[['C', ' I', ' J', ' K']]",[[]],
 4qci,"['C', 'D']","[['C', ' D']]",[[]],
 4qhu,"['D', 'C']","[['E', ' F']]","[['C', 'D']]",
@@ -946,7 +946,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 4xc1,['P'],[['C']],[['P']],
 4xc3,['P'],[['C']],[['P']],
 4xcf,['P'],[['C']],[['P']],
-4xgz,"['c', 'a', 'g', 's', 'e', 'u', 'j', 'h', 'w', 'q', 'm', 'o']","[['A', ' BA', ' CA', ' DA', ' EA', ' FA', ' GA', ' HA', ' IA', ' JA', ' Y', ' Z']]","[['a', 'c', 'e', 'g', 'h', 'j', 'm', 'o', 'q', 's', 'u', 'w']]",4xgz: No valid ori_pdb.
+4xgz,"['c', 'a', 'g', 's', 'e', 'u', 'j', 'h', 'w', 'q', 'm', 'o']","[['A', ' BA', ' CA', ' DA', ' EA', ' FA', ' GA', ' HA', ' IA', ' JA', ' Y', ' Z']]","[['a', 'c', 'e', 'g', 'h', 'j', 'm', 'o', 'q', 's', 'u', 'w']]",No valid ori_pdb.
 4xh2,"['g', 'j', 'h', 'c', 'a', 'e']","[['M', ' N', ' O', ' P', ' Q', ' R']]","[['a', 'c', 'e', 'g', 'h', 'j']]",
 4xi5,['B | A'],"[['A'], ['B']]","[[], []]",
 4xmk,"['P', 'Q', 'R']","[['C', ' F', ' I']]","[['P', 'Q', 'R']]",
@@ -1296,12 +1296,12 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 5uoe,"['B', 'C', 'A', 'D', 'E']","[['A', ' B', ' C', ' D', ' E']]",[[]],
 5uqy,"['A', 'M | F', 'E | J', 'I | N']","[['A', ' E', ' I', ' M'], ['B', ' F', ' J', ' N']]","[[], []]",
 5ush,"['A', 'X']","[['A', ' F']]",[['X']],
-5usi,"['X', 'Y']",[],[],5usi: No valid ori_fasta.
+5usi,"['X', 'Y']",[],[],No valid ori_fasta.
 5usl,"['X', 'A']","[['A', ' B']]",[['X']],
 5utf,"['B', 'G']","[['A'], ['B']]","[['G'], []]",
 5uty,"['B', 'G']","[['A'], ['D']]","[['B'], ['G']]",
 5utz,"['I', 'E', 'D', 'A']","[['C', ' F', ' I', ' L']]","[['A', 'D', 'E', 'I']]",
-5uwe,['G | N'],[],[],5uwe: No valid ori_fasta.
+5uwe,['G | N'],[],[],No valid ori_fasta.
 5v6l,"['Q', 'P']","[['C', ' F']]","[['P', 'Q']]",
 5v6m,['P'],[['C']],[['P']],
 5v7j,"['B', 'G']","[['A'], ['B']]","[['G'], []]",
@@ -1536,7 +1536,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 6e63,"['P', 'A']","[['A', ' D']]",[['P']],
 6eay,['A | B'],"[['C'], ['D']]","[['A'], ['B']]",
 6elu,"['J', 'G', 'D', 'A']","[['A', ' D', ' G', ' J']]",[[]],
-6erx,"['B', 'A', 'C', 'L', 'J', 'K']",[],[],6erx: No valid ori_fasta.
+6erx,"['B', 'A', 'C', 'L', 'J', 'K']",[],[],No valid ori_fasta.
 6ewb,"['D', 'C', 'A', 'B']","[['A', ' B', ' C', ' D']]",[[]],
 6eyo,"['A', 'B']","[['A', ' B']]",[[]],
 6f7t,"['D', 'C']","[['C', ' D']]",[[]],
@@ -1813,7 +1813,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 6s3t,"['A', 'B', 'S', 'T']","[['A', ' B', ' K', ' L']]","[['S', 'T']]",
 6s5a,['D | A'],"[['A', ' B']]",[['D']],
 6sf6,"['D', 'C']","[['E', ' F']]","[['C', 'D']]",
-6shg,['B'],[],[],6shg: No fasta generated.
+6shg,['B'],[],[],No fasta generated.
 6snc,"['C', 'P']","[['E', ' F']]","[['C', 'P']]",
 6snd,"['P', 'C']","[['C', ' F']]",[['P']],
 6sne,"['O', 'J', 'P', 'N']","[['A', ' F', ' I', ' L']]","[['J', 'N', 'O', 'P']]",
@@ -2047,7 +2047,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 6zdh,"['A', 'B', 'C']","[['A', ' B', ' C']]",[[]],
 6zer,"['D', 'A', 'E']","[['A', ' D', ' G']]",[['E']],
 6zh9,['E'],[['C']],[['E']],
-6zjg,['C'],[['A']],[['B']],6zjg: No pdb generated.
+6zjg,['C'],[['A']],[['B']],No pdb generated.
 6zlr,"['A', 'E', 'D']","[['A', ' D', ' G']]","[['A', 'D', 'E']]",
 6ztr,"['I', 'J']","[['D', ' E']]","[['I', 'J']]",
 6zvf,['P'],[['C']],[['P']],
@@ -2071,10 +2071,10 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 7ahv,['H'],"[['C'], ['D']]","[['L'], ['H']]",
 7akd,"['B', 'C']","[['A', ' B', ' C']]",[[]],
 7akj,"['C', 'B', 'A']","[['A', ' B', ' G']]",[['C']],
-7amp,['B'],[],[],7amp: No fasta generated.
-7amq,['B'],[],[],7amq: No fasta generated.
-7amr,['B'],[],[],7amr: No fasta generated.
-7ams,['B'],[],[],7ams: No fasta generated.
+7amp,['B'],[],[],No fasta generated.
+7amq,['B'],[],[],No fasta generated.
+7amr,['B'],[],[],No fasta generated.
+7ams,['B'],[],[],No fasta generated.
 7b0b,['F'],[['C']],[['F']],
 7b3o,['E'],[['A']],[['E']],
 7bbg,['A | C'],"[['A'], ['B'], ['C']]","[[], [], []]",
@@ -2139,8 +2139,8 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 7cqd,"['B', 'A']","[['C', ' F']]","[['A', 'B']]",
 7cr5,['A'],[['A']],[[]],
 7cth,"['C | A', 'B']","[['A', ' B', ' C'], ['D', ' E', ' F']]","[[], []]",
-7ctu,"['F', 'C']",[],[],7ctu: No valid ori_fasta.
-7cu4,"['F', 'C']",[],[],7cu4: No valid ori_fasta.
+7ctu,"['F', 'C']",[],[],No valid ori_fasta.
+7cu4,"['F', 'C']",[],[],No valid ori_fasta.
 7cvs,"['A', 'B']","[['A', ' B']]",[[]],
 7cvt,"['B', 'A']","[['A', ' B']]",[[]],
 7cwl,"['C', 'A', 'B']","[['A', ' B', ' C']]",[[]],
@@ -2272,7 +2272,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 7fgj,['C'],[['C']],[[]],
 7fgl,['C'],[['C']],[[]],
 7fgr,['C'],[['C']],[[]],
-7fjc,['E'],[['C']],[['E']],7fjc: No valid ori_pdb.
+7fjc,['E'],[['C']],[['E']],No valid ori_pdb.
 7fjn,"['A', 'B']","[['A', ' B', ' C']]",[[]],
 7fjo,"['A', 'C', 'B']","[['G', ' H', ' I']]","[['A', 'B', 'C']]",
 7fjs,"['B', 'E']","[['B', ' E']]",[[]],
@@ -2311,7 +2311,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 7k7i,"['A', 'D', 'E', 'C', 'B']","[['A', ' B', ' C', ' D', ' E']]",[[]],
 7k7r,"['F', 'C']","[['C', ' F']]",[[]],
 7k8m,['E'],[['C']],[['E']],
-7k8s,"['A', 'B', 'C']","[['A', ' B', ' C']]",[[]],7k8s: No valid ori_pdb.
+7k8s,"['A', 'B', 'C']","[['A', ' B', ' C']]",[[]],No valid ori_pdb.
 7k8t,"['A', 'C', 'B']","[['A', ' B', ' C']]",[[]],
 7k8u,['A | B'],"[['A', ' B', ' C']]",[[]],
 7k8v,"['A | B', 'C']","[['A', ' B', ' C']]",[[]],
@@ -2538,7 +2538,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 7mzl,['A'],[['A']],[[]],
 7mzm,['A'],[['C']],[['A']],
 7mzn,['A'],[['A']],[[]],
-7n01,['A | C'],[],[],7n01: No valid ori_fasta.
+7n01,['A | C'],[],[],No valid ori_fasta.
 7n05,['E'],[['C']],[['E']],
 7n08,"['F', 'G', 'E']","[['A', ' C', ' D']]","[['E', 'F', 'G']]",
 7n0a,['C'],[['A']],[['C']],
@@ -2585,7 +2585,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 7nx9,['E'],[['C']],[['E']],
 7nxa,['E'],[['C']],[['E']],
 7nxb,['E'],[['C']],[['E']],
-7ny5,"['E', 'G', 'A']",[],[],7ny5: No valid ori_fasta.
+7ny5,"['E', 'G', 'A']",[],[],No valid ori_fasta.
 7o2z,['P'],[['C']],[['P']],
 7o30,"['Q', 'P']","[['C', ' F']]","[['P', 'Q']]",
 7o33,['P'],[['C']],[['P']],
@@ -2884,7 +2884,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 7u2e,['A'],[['A']],[[]],
 7u5b,"['J', 'I']","[['D', ' F']]","[['I', 'J']]",
 7u60,"['A', 'C']","[['B', ' D'], ['A', ' C'], ['I', ' J']]","[[], [], ['M', 'N']]",
-7u8c,['2'],[['A']],[['BA2']],7u8c: No pdb generated.
+7u8c,['2'],[['A']],[['BA2']],No pdb generated.
 7u8e,['A'],[['A']],[[]],
 7u8g,['A'],"[['A'], ['B']]","[[], []]",
 7u9f,"['C', 'A']","[['A', ' C'], ['B', ' D']]","[[], []]",
@@ -3151,7 +3151,7 @@ code,SAb_chain,PDB_chain,PDB_auth,error
 7x96,['G'],[['A']],[['G']],
 7x9e,"['E', 'F']","[['E', ' F']]",[[]],
 7xck,['M'],[['C']],[['M']],
-7xcp,['B'],"[['A'], ['B']]","[[], []]",7xcp: No valid ori_pdb.
+7xcp,['B'],"[['A'], ['B']]","[[], []]",No valid ori_pdb.
 7xcz,['A'],[['A']],[[]],
 7xda,['A'],[['C']],[['A']],
 7xdb,"['A', 'C', 'B']","[['B', ' F', ' G']]","[['A', 'B', 'C']]",
