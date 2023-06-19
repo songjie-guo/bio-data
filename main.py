@@ -47,19 +47,19 @@ def main():
 def process(code,line):
     antigen = Antigen(code)
     if antigen.ori_fasta == None:
-        line[4] = f'{code}: No valid ori_fasta.'
+        line[4] = 'No valid ori_fasta.'
     else:
         antigen = process_fasta(antigen)
         
         if antigen.ori_pdb == None:
-            line[4] = f'{code}: No valid ori_pdb.'
+            line[4] = 'No valid ori_pdb.'
         elif len(antigen.fasta_list) == 0:
-            line[4] = f'{antigen.code}: No fasta generated.'
+            line[4] = 'No fasta generated.'
         
         else: # process_pdb
             antigen = process_pdb(antigen)
             if len(antigen.pdb_list) == 0:
-                line[4] = f'{antigen.code}: No pdb generated.'
+                line[4] = 'No pdb generated.'
     
     return antigen
 
