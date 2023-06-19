@@ -1,118 +1,91 @@
+from protein import Protein, Chain
 from anarci import anarci
-from biopandas.pdb import PandasPdb
 import re
-from io import StringIO
+import pdb
 
+num_schm = 'chothia'
+cdr_schm = 'kabat'
 
-"""
-    This part is to process the original files for the "fasta" files of antigens
-    First, get the indices of antigen in the fasta file
-    Then, generate antigen fasta files according to the indices
-"""
-def process_fasta(antigen):
-    antigen_indices, antigen = get_indices(antigen)
-    generate_fasta_file(antigen_indices, antigen)
-    return antigen
+def process(pdb_code):
+    protein = Protein(pdb_code)
+    fastaF = protein.ori_fasta
+    chain_names = get_chain_names(fastaF)
+    for i, chain_name in enumerate(chain_names):
+        chain = Chain(chain_name)
+        chain.entryID = i
+        chain = process_chain(chain, fastaF)
+        protein.chains[chain.name] = chain
+    return protein
 
-"""
-    get indices of the beginning of antigens in the fasta file
-    return:
-    antigen_indices: a list of indices, for example, [0,1]
-"""
-def get_indices(antigen):
-    fastaF = antigen.ori_fasta
-    sequences = []  
-    for i in range(0,len(fastaF),2):
-        sequences.append(('result', fastaF[i+1].replace('\n','')))
-    results = anarci(sequences, output=False)
-    alignment = results[1]
-    antigen_indices = [i for i, item in enumerate(alignment) if item is None]
-
-    antigen = get_chain_indices(antigen_indices, antigen)
-
-    return antigen_indices, antigen
-
-"""
-    get properties: chain_info_PDB, chain_id_PDB and auth_id_PDB
-    chain_info_PDB, chain_id_PDB and auth_id_PDB are a list of items
-"""
-def get_chain_indices(antigen_indices, antigen):
-    for i in (antigen_indices):
-        row = antigen.ori_fasta[i*2] 
-        sequence_info_list = row.split("|")
-
-        chain_info = sequence_info_list[1]
-        antigen.chain_info_PDB.append(chain_info)
-
-        # get chain_list
-        chain_list = chain_info.replace(" ", "")
-        chain_list = re.sub(r'\[(.*?)\]','', chain_info).split(',')
-        chain_list[0] = chain_list[0][-1]
-        
-        antigen.chain_id_PDB.append(chain_list)
-
-        # get auth_list
-        auth_list = chain_info.replace(" ", "").replace("auth","")
-        auth_list = re.findall(r'\[(.*?)\]', auth_list)
-        auth_list = [auth[0] if len(set(auth)) == 1 else auth for auth in auth_list]
-
-        antigen.auth_id_PDB.append(auth_list)
-
-    return antigen
-
-"""
-    generate antigen fasta files according to the indices
-"""
-def generate_fasta_file(antigen_indices, antigen):
-    count = 1
-    for i in (antigen_indices):
-        sequence_info = antigen.ori_fasta[i*2] 
-        sequence = antigen.ori_fasta[i*2+1]
-        # for Antigen
-        antigen.fasta_list.append([sequence_info,sequence])
-        # for file
-        with open(f'./bio-data-test/antigen_fasta/{antigen.code}_{count}.fasta', 'w') as f:
-            f.write(sequence_info)  
-            f.write(sequence)
-        count+=1
-"""
-    This part is to process the original files for the "pdb" files of antigens
-    First, check how many fasta files are there in antigen.fasta_list
-    Then, for each antigen.fasta_list, generate a pdb file
-"""
-def process_pdb(antigen):
-    atoms = antigen.ori_pdb['ATOM'] # DataFrame
-    total_count = len(antigen.fasta_list)
-    for i in range(total_count):
-        antigen = generate_pdb_file(atoms,antigen,i)
-    
-    return antigen
-
-def generate_pdb_file(atoms,antigen,i):
+def get_chain_names(fastaF):
+    chain_names = []
     # pdb.set_trace()
-    count = i+1
-    # get the chain's id we want
-    chain_ids = atoms['chain_id'].unique()
-    list1 = set(chain_ids).intersection(set(antigen.chain_id_PDB[i]))
-    list2 = set(chain_ids).intersection(set(antigen.auth_id_PDB[i]))
-    if len(list1) != 0:
-        chain_selected = list1
-    elif len(list2) != 0 :
-        chain_selected = list2
+    for i in range(int(len(fastaF)/2)):
+        chain_info = fastaF[i*2].split("|")[1]
+        if 'auth' in chain_info:
+            pattern = r"\[auth\s(\w)\]"
+            chain_list = re.findall(pattern, chain_info)
+        else:
+            chain_list = chain_info.replace(" ", "")
+            chain_list = re.sub(r'\[(.*?)\]','', chain_info).split(',')
+            chain_list[0] = chain_list[0][-1]
+        chain_names.append('|'.join(chain_list).replace(" ",""))
+    return chain_names
+
+
+def process_chain(chain, fastaF):
+    chain.sequence = fastaF[chain.entryID*2+1]
+    sequence = [('result', chain.sequence.replace('\n',''))]
+    result = anarci(sequence, output=False)
+    # pdb.set_trace()
+    alignment = result[1][0]
+    if alignment is not None:
+        # numbering = [(str(x[0][0])+str(x[0][1]).replace(' ',''), x[1]) for x in result[0][0][0][0]]
+        keys = [str(x[0][0])+str(x[0][1]).replace(' ','') for x in result[0][0][0][0]]
+        values = [x[1] for x in result[0][0][0][0]]
+        alignment = result[1][0][0]
+        chain = process_HL(chain, keys, values, alignment)
     else:
-        return antigen
+        chain.type = 'antigen'
+    return chain
+
+def get_cutting(cdr_schm):
+    if cdr_schm == 'kabat':
+        H_cutting = [31, 35, 50, 65, 95, 102]
+        L_cutting = [24, 34, 50, 56, 89, 97]
+
+    return H_cutting, L_cutting
+
+def process_HL(chain, keys, values, alignment):
+    H_cutting, L_cutting = get_cutting(cdr_schm)
+    if alignment['chain_type'] == 'H':
+        chain.type = 'H'
+        H_indices = []
+        for H_cut in H_cutting:
+            for i, key in enumerate(keys):
+                if key == str(H_cut):
+                    H_indices.append(i)
+                    break
+            else:
+                print(f"No H_cut found with {H_cut}")
+        H1 = ''.join(values[H_indices[0]:H_indices[1]+1])
+        H2 = ''.join(values[H_indices[2]:H_indices[3]+1])
+        H3 = ''.join(values[H_indices[4]:H_indices[5]+1])
+        chain.CDR = [H1,H2,H3]
     
-    atoms_selected = atoms[atoms['chain_id'].isin(chain_selected)]
+    elif (alignment['chain_type'] == 'L') or (alignment['chain_type'] == 'K'):
+        chain.type = 'L'
+        L_indices = []
+        for L_cut in L_cutting:
+            for i, key in enumerate(keys):
+                if key == str(L_cut):
+                    L_indices.append(i)
+                    break
+            else:
+                print(f"No H_cut found with {L_cut}")
+        L1 = ''.join(values[L_indices[0]:L_indices[1]+1])
+        L2 = ''.join(values[L_indices[2]:L_indices[3]+1])
+        L3 = ''.join(values[L_indices[4]:L_indices[5]+1])
+        chain.CDR = [L1,L2,L3]
 
-    # for Antigen
-    antigen.pdb_list.append(atoms_selected)
-
-    # for file
-    antigen_pdb = PandasPdb()
-    antigen_pdb._df = {'ATOM':atoms_selected}
-    antigen_pdb.to_pdb(path=f'./bio-data-test/antigen_pdb/{antigen.code}_{count}.pdb')
-    
-    return antigen
-
-    
-
+    return chain
