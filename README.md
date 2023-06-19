@@ -37,8 +37,7 @@ bio-data-test/ (change the path if needed and change corresponding codes)
   antigen_pdb/
     1a2y_1.pdb 
     ...
-  log/
-    error.txt
+  master.csv
 ```
 
 Note that all data are stored in a seperate folder, for better management
