@@ -8,7 +8,7 @@ from process import process_fasta, process_pdb
 
 # you may change below paths:
 tsv_files = ["./bio-data/peptide.tsv", "./bio-data/protein.tsv"]
-log_file = './bio-data-test/error.log'
+log_file = './bio-data-test/error.txt'
 
 """
     main part of the processing
