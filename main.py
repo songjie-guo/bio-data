@@ -1,40 +1,40 @@
 import pandas as pd
-from antigen import Antigen
-from process import process_fasta, process_pdb
 from tqdm import tqdm
-import json
 import pickle
 import datetime
 
-log_file = './bio-data-test/error.txt'
+from antigen import Antigen
+from process import process_fasta, process_pdb
 
-all_antigen = []
-
-# you may change below:
+# you may change below paths:
 tsv_files = ["./bio-data/peptide.tsv", "./bio-data/protein.tsv"]
+log_file = './bio-data-test/error.log'
+
+"""
+    main part of the processing
+"""
 
 def main():
     SABdf = get_SAB_df(tsv_files)
 
     pdb_codes= sorted(set(SABdf['pdb']))
-    # pdb_codes = ['1kb5','1nfd','6shg','7amp','7amq','7amr','7ams'] # No fasta generated.
-    # pdb_codes = ['6zjg','7u8c'] #No pdb generated.
-
+ 
+    antigens = {}
     for pdb_code in tqdm(pdb_codes):
         # 1. process it
         antigen = process(pdb_code)
-        # 2. add_SAB
+        # 2. add_SAB_info into it, for further checking
         antigen = add_SAB_info(antigen,SABdf)
-    # print(antigen.chain_id_SAB, antigen.chain_id_PDB, antigen.auth_id_PDB)
     
-        all_antigen.append(antigen)
-
-    with open('./bio-data-test/all_antigen.json', 'w') as f:
-        json.dump(all_antigen, f)
-
+        antigens[antigen.code] = antigen
+    
     with open('./bio-data-test/all_antigen.pkl', 'wb') as f:
-        pickle.dump(all_antigen, f)
-    
+        pickle.dump(antigens, f)
+
+"""
+    To process antigen (by its pdb_code, e.g. '1a14')
+    And record all errors in error.log
+"""
 
 def process(code):
     antigen = Antigen(code)
@@ -54,7 +54,6 @@ def process(code):
     
     return antigen
 
-
 def get_SAB_df(tsv_files):
     df = pd.DataFrame()
     for tsv_file in tsv_files:
@@ -72,4 +71,5 @@ def log(message):
         # current_time = datetime.datetime.now().strftime('%Y/%m/%d %H:%M')
         # f.write(f'{current_time}\t{message}\n')
         f.write(f'{message}\n')
+
 main()
