@@ -1,14 +1,13 @@
 import pandas as pd
 from tqdm import tqdm
-import pickle
-import datetime
-
+import csv
 from antigen import Antigen
 from process import process_fasta, process_pdb
 
+
 # you may change below paths:
 tsv_files = ["./bio-data/peptide.tsv", "./bio-data/protein.tsv"]
-log_file = './bio-data-test/error.txt'
+log_file = './bio-data-test/error.log'
 
 """
     main part of the processing
@@ -19,35 +18,48 @@ def main():
 
     pdb_codes= sorted(set(SABdf['pdb']))
  
-    antigens = {}
-    for pdb_code in tqdm(pdb_codes):
-        # 1. process it
-        antigen = process(pdb_code)
-        # 2. add_SAB_info into it, for further checking
-        antigen = add_SAB_info(antigen,SABdf)
+    # Open a new CSV file for error_checking
+    csvfile = open('./bio-data-test/master.csv', 'w', newline='')
+    writer = csv.writer(csvfile)
+    writer.writerow(['code', 'SAb_chain', 'PDB_chain', 'PDB_auth', 'error']) 
     
-        antigens[antigen.code] = antigen
+    for pdb_code in tqdm(pdb_codes):
+        line = [None,None,[],[],None] 
+        # 1. process it
+        antigen = process(pdb_code,line)
+        # 2. add_SAB_info into it, for further checking
+        antigen = add_SAB_info(antigen, SABdf)
+
+        line[0] = antigen.code
+        line[1] = str(antigen.chain_id_SAB)
+        line[2] = str(antigen.chain_id_PDB)
+        line[3] = str(antigen.auth_id_PDB)
+
+        writer.writerow(line)
+    
+    csvfile.close()
 
 """
     To process antigen (by its pdb_code, e.g. '1a14')
     And record all errors in error.log
 """
 
-def process(code):
+def process(code,line):
     antigen = Antigen(code)
     if antigen.ori_fasta == None:
-        log(f'{code}: No valid ori_fasta.')
+        line[4] = f'{code}: No valid ori_fasta.'
     else:
         antigen = process_fasta(antigen)
         
         if antigen.ori_pdb == None:
-            log(f'{code}: No valid ori_pdb.')
+            line[4] = f'{code}: No valid ori_pdb.'
         elif len(antigen.fasta_list) == 0:
-            log(f'{antigen.code}: No fasta generated.')
+            line[4] = f'{antigen.code}: No fasta generated.'
+        
         else: # process_pdb
             antigen = process_pdb(antigen)
             if len(antigen.pdb_list) == 0:
-                log(f'{antigen.code}: No pdb generated.')
+                line[4] = f'{antigen.code}: No pdb generated.'
     
     return antigen
 
@@ -62,11 +74,5 @@ def add_SAB_info(antigen,SABdf):
     for chain_id in SABdf[SABdf['pdb'] == antigen.code]['antigen_chain'].unique():
         antigen.chain_id_SAB.append(chain_id)
     return antigen
-
-def log(message):
-    with open(log_file, 'a') as f:
-        # current_time = datetime.datetime.now().strftime('%Y/%m/%d %H:%M')
-        # f.write(f'{current_time}\t{message}\n')
-        f.write(f'{message}\n')
 
 main()
