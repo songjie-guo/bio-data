@@ -1,16 +1,13 @@
 from biopandas.pdb import PandasPdb
-import pdb
-import csv
 import datetime
 
-file_path = './bio-data-test'
-current_time = datetime.datetime.now().strftime('%Y/%m/%d %H:%M')
-# current_time = datetime.datetime.now().strftime('%H:%M')
+from config import file_path
 
+current_time = datetime.datetime.now().strftime('%Y/%m/%d %H:%M')
 
 def write_all_you_want(protein_writer, chain_writer, protein, 
             WrtFasta=True, WrtPDB=True, SumChain=True, SumProtein=True):
-    # pdb.set_trace()
+
     for chain in protein.chains.values():
         if protein.log != 'No valid ori_fasta' and WrtFasta:
             generate_fasta_file(chain,protein)
@@ -35,8 +32,7 @@ def generate_fasta_file(chain, protein):
 def generate_pdb_file(chain,protein):
     chain_selected = chain.name.split("|")
     atoms = protein.ori_pdb['ATOM'] 
-    # pdb.set_trace()
-    # try to match first
+
     atoms_selected = atoms[atoms['chain_id'].isin(chain_selected)]
     
     if len(atoms_selected) == 0:

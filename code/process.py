@@ -1,10 +1,9 @@
-from protein import Protein, Chain
 from anarci import anarci
 import re
-import pdb
 
-num_schm = 'chothia'
-cdr_schm = 'kabat'
+from protein import Protein, Chain
+from config import num_schm, cdr_schm
+
 
 def process(pdb_code):
     protein = Protein(pdb_code)
@@ -12,7 +11,6 @@ def process(pdb_code):
     if protein.ori_fasta is not None:
         fastaF = protein.ori_fasta
         chain_names = get_chain_names(fastaF)
-        # pdb.set_trace()
         for i, chain_name in enumerate(chain_names):
             chain = Chain(chain_name)
             chain.entryID = i
@@ -22,7 +20,6 @@ def process(pdb_code):
 
 def get_chain_names(fastaF):
     chain_names = []
-    # pdb.set_trace()
     for i in range(int(len(fastaF)/2)):
         chain_info = fastaF[i*2].split("|")[1]
         if 'auth' in chain_info:
@@ -39,8 +36,7 @@ def get_chain_names(fastaF):
 def process_chain(chain, fastaF):
     chain.sequence = fastaF[chain.entryID*2+1]
     sequence = [('result', chain.sequence.replace('\n',''))]
-    result = anarci(sequence, scheme = "chothia", output=False)
-    # pdb.set_trace()
+    result = anarci(sequence, scheme = num_schm, output=False)
     alignment = result[1][0]
     if alignment is None:
         chain.type = 'antigen'

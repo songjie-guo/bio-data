@@ -1,5 +1,8 @@
 from biopandas.pdb import PandasPdb
 
+# you may change below parameters:
+file_path = './data'
+
 class Protein:
     def __init__(self,code):
         self.code = code
@@ -9,7 +12,7 @@ class Protein:
         self.chains = {}
     
     def get_ori_fasta(self):
-        ori_fasta_path = f"./bio-data/ori_fasta/{self.code}.fasta"
+        ori_fasta_path = f"{file_path}/ori_fasta/{self.code}.fasta"
         with open(ori_fasta_path, "r") as f:
             fastaF = f.readlines()
         if fastaF[0] == "No fasta files were found.":
@@ -19,7 +22,7 @@ class Protein:
             return fastaF
 
     def get_ori_pdb(self):
-        ori_pdb_path = f"./bio-data/ori_pdb/{self.code}.pdb"
+        ori_pdb_path = f"{file_path}/ori_pdb/{self.code}.pdb"
         with open(ori_pdb_path, 'r') as f:
             first_line = f.readline()
         if first_line[0:6] != 'HEADER':
