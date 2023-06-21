@@ -3,6 +3,7 @@ from biopandas.pdb import PandasPdb
 class Protein:
     def __init__(self,code):
         self.code = code
+        self.log = None
         self.ori_fasta = self.get_ori_fasta() # list
         self.ori_pdb = self.get_ori_pdb() # Dataframe
         self.chains = {}
@@ -12,6 +13,7 @@ class Protein:
         with open(ori_fasta_path, "r") as f:
             fastaF = f.readlines()
         if fastaF[0] == "No fasta files were found.":
+            self.log = "No valid ori_fasta"
             return None
         else:
             return fastaF
@@ -21,6 +23,7 @@ class Protein:
         with open(ori_pdb_path, 'r') as f:
             first_line = f.readline()
         if first_line[0:6] != 'HEADER':
+            self.log = "No valid ori_pdb"
             return None
         else:
             pdbF = PandasPdb()

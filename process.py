@@ -8,13 +8,16 @@ cdr_schm = 'kabat'
 
 def process(pdb_code):
     protein = Protein(pdb_code)
-    fastaF = protein.ori_fasta
-    chain_names = get_chain_names(fastaF)
-    for i, chain_name in enumerate(chain_names):
-        chain = Chain(chain_name)
-        chain.entryID = i
-        chain = process_chain(chain, fastaF)
-        protein.chains[chain.name] = chain
+    # pdb.set_trace()
+    if protein.ori_fasta is not None:
+        fastaF = protein.ori_fasta
+        chain_names = get_chain_names(fastaF)
+        # pdb.set_trace()
+        for i, chain_name in enumerate(chain_names):
+            chain = Chain(chain_name)
+            chain.entryID = i
+            chain = process_chain(chain, fastaF)
+            protein.chains[chain.name] = chain
     return protein
 
 def get_chain_names(fastaF):
@@ -23,7 +26,7 @@ def get_chain_names(fastaF):
     for i in range(int(len(fastaF)/2)):
         chain_info = fastaF[i*2].split("|")[1]
         if 'auth' in chain_info:
-            pattern = r"\[auth\s(\w)\]"
+            pattern = r"\[auth\s+(\w+)\]"
             chain_list = re.findall(pattern, chain_info)
         else:
             chain_list = chain_info.replace(" ", "")
@@ -36,17 +39,22 @@ def get_chain_names(fastaF):
 def process_chain(chain, fastaF):
     chain.sequence = fastaF[chain.entryID*2+1]
     sequence = [('result', chain.sequence.replace('\n',''))]
-    result = anarci(sequence, output=False)
+    result = anarci(sequence, scheme = "chothia", output=False)
     # pdb.set_trace()
     alignment = result[1][0]
-    if alignment is not None:
+    if alignment is None:
+        chain.type = 'antigen'
+        return chain
+    
+    chain_type = result[1][0][0]['chain_type']
+    if chain_type in ["H", "L", "K"]: 
         # numbering = [(str(x[0][0])+str(x[0][1]).replace(' ',''), x[1]) for x in result[0][0][0][0]]
         keys = [str(x[0][0])+str(x[0][1]).replace(' ','') for x in result[0][0][0][0]]
         values = [x[1] for x in result[0][0][0][0]]
         alignment = result[1][0][0]
         chain = process_HL(chain, keys, values, alignment)
     else:
-        chain.type = 'antigen'
+        chain.type = 'antigen' 
     return chain
 
 def get_cutting(cdr_schm):
@@ -73,7 +81,7 @@ def process_HL(chain, keys, values, alignment):
         H3 = ''.join(values[H_indices[4]:H_indices[5]+1])
         chain.CDR = [H1,H2,H3]
     
-    elif (alignment['chain_type'] == 'L') or (alignment['chain_type'] == 'K'):
+    elif alignment['chain_type'] in ['L','K']:
         chain.type = 'L'
         L_indices = []
         for L_cut in L_cutting:
