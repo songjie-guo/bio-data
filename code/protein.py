@@ -1,7 +1,5 @@
 from biopandas.pdb import PandasPdb
-
-# you may change below parameters:
-file_path = './data'
+from config import file_path
 
 class Protein:
     def __init__(self,code):
