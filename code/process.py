@@ -4,10 +4,13 @@ import re
 from protein import Protein, Chain
 from config import num_schm, cdr_schm
 
-
+"""
+    The process part,
+    First, you create an object(Protein), with properties: ori_fasta, ori_pdb 
+    If ori_fasta is not None, you can process by each entity_ID / chain.
+"""
 def process(pdb_code):
     protein = Protein(pdb_code)
-    # pdb.set_trace()
     if protein.ori_fasta is not None:
         fastaF = protein.ori_fasta
         chain_names = get_chain_names(fastaF)
@@ -18,6 +21,10 @@ def process(pdb_code):
             protein.chains[chain.name] = chain
     return protein
 
+"""
+    Get chain names from the odd line, e.g. "Chain A[auth N]"
+    NOTE: if it has an "[auth ]" afterwards, you should use the auth chain name, so that correct pdb chain can be selected.
+"""
 def get_chain_names(fastaF):
     chain_names = []
     for i in range(int(len(fastaF)/2)):
@@ -32,7 +39,9 @@ def get_chain_names(fastaF):
         chain_names.append('|'.join(chain_list).replace(" ",""))
     return chain_names
 
-
+"""
+    Update each chain's properties
+"""
 def process_chain(chain, fastaF):
     chain.sequence = fastaF[chain.entryID*2+1]
     sequence = [('result', chain.sequence.replace('\n',''))]
@@ -53,6 +62,10 @@ def process_chain(chain, fastaF):
         chain.type = 'antigen' 
     return chain
 
+"""
+    This function is to get the cutting point for the CDR regions in H/L chains.
+    If you use different cdr sheme & numbering scheme, please adjust this function, accordingly.
+"""
 def get_cutting(cdr_schm):
     if cdr_schm == 'kabat':
         H_cutting = [31, 35, 50, 65, 95, 102]
@@ -60,6 +73,10 @@ def get_cutting(cdr_schm):
 
     return H_cutting, L_cutting
 
+
+"""
+    This function is to get the fasta of CDR regions in H/L chains.
+"""
 def process_HL(chain, keys, values, alignment):
     H_cutting, L_cutting = get_cutting(cdr_schm)
     if alignment['chain_type'] == 'H':
