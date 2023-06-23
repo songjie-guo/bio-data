@@ -5,6 +5,10 @@ from config import file_path
 
 current_time = datetime.datetime.now().strftime('%Y/%m/%d %H:%M')
 
+"""
+   If you want / donnot want to Write fasta files/ Write PDB files/ Write summary file for all chains/ Write summary file for all protein (including all errors.)
+   Please change the parameters: WrtFasta, WrtPDB, SumChain, SumProtein
+"""
 def write_all_you_want(protein_writer, chain_writer, protein, 
             WrtFasta=True, WrtPDB=True, SumChain=True, SumProtein=True):
 
