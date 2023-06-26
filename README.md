@@ -7,7 +7,7 @@ You can use your own methods to download these files, usually using the download
 
 ## 2. Change the parameters in `config.py`
 
-In the configuration file `config.py , there are several parameters.
+In the configuration file `config.py` , there are several parameters.
 
 | Parameters  | Meaning                                               |
 | ----------- | ----------------------------------------------------- |
