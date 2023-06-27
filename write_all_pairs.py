@@ -1,14 +1,24 @@
-import pandas as pd
-import requests
-from bs4 import BeautifulSoup, Comment
-import re
-from tqdm import tqdm
 import os
+import re
+import requests
+import pandas as pd
+from bs4 import BeautifulSoup, Comment
+from tqdm import tqdm
 
-sab = pd.read_csv("./bio-data/all.tsv", sep='\t').sort_values(by='pdb')
-pdb_codes = sab.iloc[:,0].unique()
+"""
+NOTE: 
+By using this python file to generate fasta/pdb files for antibody-antigen pairs,
+you ONLY need to create a folder, with four sub-folders: antigen_fasta, antigen_pdb, antibody_fasta, antigen_pdb,
+and change the file_path below.
+NO original files from SAbDab/PDB website will be downloaded or needed to download.
+"""
+sab = pd.read_csv("./bio-data/all.tsv", sep='\t').sort_values(by='pdb') # summary file of SAbDab
+pdb_codes = sab.iloc[:,0].unique() # all pdb_codes you process
 file_path = './bio-data'
 
+"""
+    Find the info of fv part we want from the result of Beautful Soup
+"""
 def extract_comments(comments):
     contents = []
     for comment in comments:
@@ -18,6 +28,9 @@ def extract_comments(comments):
             next_element = next_element.next_sibling
     return contents
 
+"""
+    Extract info from Beautful Soup's <table_result> and <table_alignment>
+"""
 def process_table_result(table_element):
     table_data = {}
     for row in table_element.find_all('tr'):
@@ -34,6 +47,9 @@ def process_table_alignment(table_element):
     chain = ''.join(cells)
     return chain
 
+"""
+    The main function to process fasta files for a pdb_code
+"""
 def process_fasta(pdb_code):
     url = f'https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/sabdab/structureviewer/?pdb={pdb_code}'
     response = requests.get(url, stream=True)
@@ -45,12 +61,14 @@ def process_fasta(pdb_code):
     antigen_contents = extract_comments([c for c in comments if c == ' ANTIGEN DETAILS '])
     cdr_contents = extract_comments([c for c in comments if c == ' CDR SEQUENCES '])
 
+    # get all info you need for processing
     fv_info = [process_table_result(table_element) for table_element in fv_contents[1::5]]
     H_sequence_info = [process_table_alignment(table_element) for table_element in sequence_contents[5::13]]
     L_sequence_info = [process_table_alignment(table_element) for table_element in sequence_contents[9::13]]
     antigen_info = [process_table_result(table_element) for table_element in antigen_contents[1::5]]
     cdr_info = [process_table_result(table_element) for table_element in cdr_contents[1::5]]
-    
+
+    # process fasta one by one from fv regions
     fv_num = len(fv_info)
     for i in range(fv_num):
         H_chain_name = fv_info[i]['Heavy chain']
@@ -60,7 +78,8 @@ def process_fasta(pdb_code):
         antigen_chain_name = antigen_info[i]['Antigen chains']
         antigen_sequence = antigen_info[i]['Antigen sequence']
         cdrs = cdr_info[i]
-        
+
+        # write antibody's HL fasta, regardless of the antigens
         with open(f'{file_path}/antibody_fasta/{pdb_code}_{H_chain_name}{L_chain_name}.fasta', 'w') as f:
             f.write(f'>:H\n')
             f.write(H_sequence+'\n')
@@ -78,18 +97,22 @@ def process_fasta(pdb_code):
             f.write(cdrs['CDRL2']+'\n')
             f.write(f'>:L3\n')
             f.write(cdrs['CDRL3']+'\n')
-        
+
+        # if only one antigen pairs to that fv region
         if len(list(antigen_chain_name))==1:
-            # write the antigen_fasta
+            # write the antigen_fasta directly
             with open(f'{file_path}/antigen_fasta/{pdb_code}_{H_chain_name}{L_chain_name}_{antigen_chain_name}.fasta', 'w') as f:
                 f.write(f'>:antigen\n')
                 f.write(antigen_sequence)
+        # if more than two antigens pair to that fv region
+        # use another function to get fasta sequences from PDB website
         else:
-            if antigen_chain_name != '':
+            if antigen_chain_name != '': # e.g. idee's antigen_chain_name is ''.
                 process_multiple_fasta(pdb_code,H_chain_name,L_chain_name,antigen_chain_name)
-            else:
-                print(pdb_code)
 
+"""
+    The function to get chain names from PDB website's fasta sequences
+"""
 def get_chain_names(fastaF):
     chain_names = []
     for i in range(int(len(fastaF)/2)):
@@ -106,6 +129,9 @@ def get_chain_names(fastaF):
         chain_names.append(''.join(chain_list_new).replace(" ",""))
     return chain_names
 
+"""
+    The function to get fasta sequences from PDB website
+"""
 def process_multiple_fasta(pdb_code,H_chain_name,L_chain_name,antigen_chain_name):
     antigen_chain_name_list = antigen_chain_name.split(',')
     PDB_CODE = pdb_code.upper()
@@ -124,6 +150,9 @@ def process_multiple_fasta(pdb_code,H_chain_name,L_chain_name,antigen_chain_name
             f.write(f'>:antigen\n')
             f.write(antigen_sequence)
 
+"""
+    Get indices of a specific chain_name from pdb file
+"""
 def get_indices(chain_name,pdbF):
     indices = []
     for i in range(len(pdbF)):
@@ -135,6 +164,10 @@ def get_indices(chain_name,pdbF):
                 indices.append(i)
     return indices
 
+"""
+    The main function to process pdb files
+    NOTE: We only process pdb based on all fasta files we can get
+"""
 def process_pdb():
     directory_path = "./bio-data/antigen_fasta"
     for file in tqdm(sorted(os.listdir(directory_path))):
@@ -159,15 +192,16 @@ def process_pdb():
                 for index in antigen_indices:
                     f.write(pdbF[index]+'\n')
         except:
-            continue
+            continue # you may change to see errors
 
 
+# the main function
 print("Start to process fasta.")
 for pdb_code in tqdm(pdb_codes):
     try:
         process_fasta(pdb_code)
     except:
-        continue
+        continue # you may change to see errors
 
 print("Start to process pdb.")
 process_pdb()
