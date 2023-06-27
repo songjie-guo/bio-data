@@ -4,10 +4,8 @@ from bs4 import BeautifulSoup, Comment
 import re
 from tqdm import tqdm
 import os
-import pdb
 
 sab = pd.read_csv("./bio-data/all.tsv", sep='\t').sort_values(by='pdb')
-# sab = pd.read_csv("./bu.txt", sep=' ')
 pdb_codes = sab.iloc[:,0].unique()
 file_path = './bio-data'
 
@@ -94,7 +92,6 @@ def process_fasta(pdb_code):
 
 def get_chain_names(fastaF):
     chain_names = []
-    # pdb.set_trace()
     for i in range(int(len(fastaF)/2)):
         chain_info = fastaF[i*2].split("|")[1]
         chain_info = chain_info.replace(" ", "").replace('Chains','').replace('Chain','')
@@ -140,36 +137,39 @@ def get_indices(chain_name,pdbF):
 
 def process_pdb():
     directory_path = "./bio-data/antigen_fasta"
-    for file in tqdm(sorted(os.listdir(directory_path))[:10]):
-        pdb_code,HL,antigen = file.replace('.fasta','').split('_')
-        
-        url = f'https://opig.stats.ox.ac.uk//webapps/sabdab-sabpred/sabdab/pdb/{pdb_code}/?scheme=chothia'
-        response = requests.get(url, stream=True)
-        soup = BeautifulSoup(response.text, features="html.parser")
-        pdbF = str(soup).split('\n')
+    for file in tqdm(sorted(os.listdir(directory_path))):
+        try:
+            pdb_code,HL,antigen = file.replace('.fasta','').split('_')
+            
+            url = f'https://opig.stats.ox.ac.uk//webapps/sabdab-sabpred/sabdab/pdb/{pdb_code}/?scheme=chothia'
+            response = requests.get(url, stream=True)
+            soup = BeautifulSoup(response.text, features="html.parser")
+            pdbF = str(soup).split('\n')
+    
+            HL_indices = get_indices(HL,pdbF)
+            antigen_indices = get_indices(antigen,pdbF)
+    
+    
+            with open(f'{file_path}/antibody_pdb/{pdb_code}_{HL}.pdb','w') as f:
+                for index in HL_indices:
+                    f.write(pdbF[index]+'\n')
+    
+    
+            with open(f'{file_path}/antigen_pdb/{pdb_code}_{HL}_{antigen}.pdb','w') as f:
+                for index in antigen_indices:
+                    f.write(pdbF[index]+'\n')
+        except:
+            continue
 
-        HL_indices = get_indices(HL,pdbF)
-        antigen_indices = get_indices(antigen,pdbF)
 
+print("Start to process fasta.")
+for pdb_code in tqdm(pdb_codes):
+    try:
+        process_fasta(pdb_code)
+    except:
+        continue
 
-        with open(f'{file_path}/antibody_pdb/{pdb_code}_{HL}.pdb','w') as f:
-            for index in HL_indices:
-                f.write(pdbF[index]+'\n')
-
-
-        with open(f'{file_path}/antigen_pdb/{pdb_code}_{HL}_{antigen}.pdb','w') as f:
-            for index in antigen_indices:
-                f.write(pdbF[index]+'\n')
-
-
-# print("start to process fasta. 🤣")
-# for pdb_code in tqdm(pdb_codes):
-#     try:
-#         process_fasta(pdb_code)
-#     except:
-#         continue
-print("start to process pdb. 🤣")
-
+print("Start to process pdb.")
 process_pdb()
 
 
