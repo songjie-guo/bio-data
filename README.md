@@ -29,3 +29,5 @@ From the two summray files generated, you can check for errors that may have occ
 ## 4. Additional Note
 
 If you simply want to get antibody-antigen pairs, run the `write_all_pairs.py` will be good enough. Nothing else needed.
+
+Example data you will get are in the data foler for your reference.
