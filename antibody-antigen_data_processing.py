@@ -13,6 +13,8 @@ you ONLY need to create a folder, with four sub-folders:
     antigen_fasta, antigen_pdb,(if antigen exists)
 and change the file_path below.
 NO original files from SAbDab/PDB website will be downloaded or needed to download.
+
+You may change parameters below.
 """
 sab = pd.read_csv("./bound-data/bound.tsv", sep='\t').sort_values(by='pdb') # summary file of SAbDab
 pdb_codes = sab.iloc[:,0].unique() # all pdb_codes you process
