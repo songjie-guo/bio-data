@@ -8,13 +8,16 @@ from tqdm import tqdm
 """
 NOTE: 
 By using this python file to generate fasta/pdb files for antibody-antigen pairs,
-you ONLY need to create a folder, with four sub-folders: antigen_fasta, antigen_pdb, antibody_fasta, antigen_pdb,
+you ONLY need to create a folder, with four sub-folders: 
+    antibody_fasta, antibody_pdb, 
+    antigen_fasta, antigen_pdb,(if antigen exists)
 and change the file_path below.
 NO original files from SAbDab/PDB website will be downloaded or needed to download.
 """
-sab = pd.read_csv("./bio-data/all.tsv", sep='\t').sort_values(by='pdb') # summary file of SAbDab
+sab = pd.read_csv("./bound-data/bound.tsv", sep='\t').sort_values(by='pdb') # summary file of SAbDab
 pdb_codes = sab.iloc[:,0].unique() # all pdb_codes you process
-file_path = './bio-data'
+file_path = './unbound-data'
+if_antigen = False # for bound structures: T, undbound: F
 
 """
     Find the info of fv part we want from the result of Beautful Soup
@@ -98,6 +101,10 @@ def process_fasta(pdb_code):
             f.write(f'>:L3\n')
             f.write(cdrs['CDRL3']+'\n')
 
+        # if_antigen is False, stop writing antigen fasta
+        if not if_antigen:
+            return
+        
         # if only one antigen pairs to that fv region
         if len(list(antigen_chain_name))==1:
             # write the antigen_fasta directly
@@ -111,7 +118,7 @@ def process_fasta(pdb_code):
                 process_multiple_fasta(pdb_code,H_chain_name,L_chain_name,antigen_chain_name)
 
 """
-    The function to get chain names from PDB website's fasta sequences
+    The function to get a list of chain names from PDB website's fasta file
 """
 def get_chain_names(fastaF):
     chain_names = []
@@ -151,7 +158,7 @@ def process_multiple_fasta(pdb_code,H_chain_name,L_chain_name,antigen_chain_name
             f.write(antigen_sequence)
 
 """
-    Get indices of a specific chain_name from pdb file
+    Get indices of "ATOM" lines with a specific chain_name from pdb file
 """
 def get_indices(chain_name,pdbF):
     indices = []
@@ -174,7 +181,7 @@ def process_pdb():
         try:
             pdb_code,HL,antigen = file.replace('.fasta','').split('_')
             
-            url = f'https://opig.stats.ox.ac.uk//webapps/sabdab-sabpred/sabdab/pdb/{pdb_code}/?scheme=chothia'
+            url = f'https://opig.stats.ox.ac.uk//webapps/sabdab-sabpred/sabdab/pdb/{pdb_code}/?scheme=chothia' # NOTE: We use "Chothia" numbering and CDR definition, same as SAbDab's default setting
             response = requests.get(url, stream=True)
             soup = BeautifulSoup(response.text, features="html.parser")
             pdbF = str(soup).split('\n')
@@ -187,7 +194,8 @@ def process_pdb():
                 for index in HL_indices:
                     f.write(pdbF[index]+'\n')
     
-    
+            if not if_antigen:
+                return
             with open(f'{file_path}/antigen_pdb/{pdb_code}_{HL}_{antigen}.pdb','w') as f:
                 for index in antigen_indices:
                     f.write(pdbF[index]+'\n')
