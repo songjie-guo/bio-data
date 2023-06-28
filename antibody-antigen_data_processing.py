@@ -101,21 +101,19 @@ def process_fasta(pdb_code):
             f.write(f'>:L3\n')
             f.write(cdrs['CDRL3']+'\n')
 
-        # if_antigen is False, stop writing antigen fasta
-        if not if_antigen:
-            return
-        
-        # if only one antigen pairs to that fv region
-        if len(list(antigen_chain_name))==1:
-            # write the antigen_fasta directly
-            with open(f'{file_path}/antigen_fasta/{pdb_code}_{H_chain_name}{L_chain_name}_{antigen_chain_name}.fasta', 'w') as f:
-                f.write(f'>:antigen\n')
-                f.write(antigen_sequence)
-        # if more than two antigens pair to that fv region
-        # use another function to get fasta sequences from PDB website
-        else:
-            if antigen_chain_name != '': # e.g. idee's antigen_chain_name is ''.
-                process_multiple_fasta(pdb_code,H_chain_name,L_chain_name,antigen_chain_name)
+        # if_antigen is True, write antigen fasta files
+        if if_antigen:
+            # if only one antigen pairs to that fv region
+            if len(list(antigen_chain_name))==1:
+                # write the antigen_fasta directly
+                with open(f'{file_path}/antigen_fasta/{pdb_code}_{H_chain_name}{L_chain_name}_{antigen_chain_name}.fasta', 'w') as f:
+                    f.write(f'>:antigen\n')
+                    f.write(antigen_sequence)
+            # if more than two antigens pair to that fv region
+            # use another function to get fasta sequences from PDB website
+            else:
+                if antigen_chain_name != '': # e.g. idee's antigen_chain_name is ''.
+                    process_multiple_fasta(pdb_code,H_chain_name,L_chain_name,antigen_chain_name)
 
 """
     The function to get a list of chain names from PDB website's fasta file
@@ -176,10 +174,17 @@ def get_indices(chain_name,pdbF):
     NOTE: We only process pdb based on all fasta files we can get
 """
 def process_pdb():
-    directory_path = "./bio-data/antigen_fasta"
-    for file in tqdm(sorted(os.listdir(directory_path))):
+    if if_antigen:
+        ref_folder = 'antigen_fasta'
+    else:
+        ref_folder = 'antibody_fasta'
+    
+    for file in tqdm(sorted(os.listdir(f"{file_path}/{ref_folder}"))):
         try:
-            pdb_code,HL,antigen = file.replace('.fasta','').split('_')
+            pdb_code = file.replace('.fasta','').split('_')[0]
+            HL = file.replace('.fasta','').split('_')[1]
+            if if_antigen:
+                antigen = file.replace('.fasta','').split('_')[2]
             
             url = f'https://opig.stats.ox.ac.uk//webapps/sabdab-sabpred/sabdab/pdb/{pdb_code}/?scheme=chothia' # NOTE: We use "Chothia" numbering and CDR definition, same as SAbDab's default setting
             response = requests.get(url, stream=True)
@@ -187,31 +192,27 @@ def process_pdb():
             pdbF = str(soup).split('\n')
     
             HL_indices = get_indices(HL,pdbF)
-            antigen_indices = get_indices(antigen,pdbF)
-    
-    
             with open(f'{file_path}/antibody_pdb/{pdb_code}_{HL}.pdb','w') as f:
                 for index in HL_indices:
                     f.write(pdbF[index]+'\n')
-    
-            if not if_antigen:
-                return
-            with open(f'{file_path}/antigen_pdb/{pdb_code}_{HL}_{antigen}.pdb','w') as f:
-                for index in antigen_indices:
-                    f.write(pdbF[index]+'\n')
+            
+            if if_antigen:
+                antigen_indices = get_indices(antigen,pdbF)
+                with open(f'{file_path}/antigen_pdb/{pdb_code}_{HL}_{antigen}.pdb','w') as f:
+                    for index in antigen_indices:
+                        f.write(pdbF[index]+'\n')
         except:
-            continue # you may change to see errors
+            continue
 
 
-# the main function
+
+# main()
 print("Start to process fasta.")
 for pdb_code in tqdm(pdb_codes):
     try:
         process_fasta(pdb_code)
     except:
-        continue # you may change to see errors
+        continue
 
 print("Start to process pdb.")
 process_pdb()
-
-
